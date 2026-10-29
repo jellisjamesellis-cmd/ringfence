@@ -1,0 +1,51 @@
+name: Compile iPhone app
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'modules/**'
+      - 'app.json'
+      - 'package.json'
+      - '.github/workflows/ios-compile.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: ios-compile
+  cancel-in-progress: true
+
+jobs:
+  compile:
+    runs-on: macos-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install packages
+        run: |
+          npm install
+          npx expo install --fix
+
+      - name: Generate the native iPhone project
+        run: npx expo prebuild --platform ios --clean
+
+      - name: Compile for the iOS simulator (no signing)
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -workspace ios/Ringfence.xcworkspace \
+            -scheme Ringfence \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO \
+            build 2>&1 | tee build.log | grep -E "error:|warning: .*WatchLink|BUILD (SUCCEEDED|FAILED)" || true
+          grep -q "BUILD SUCCEEDED" build.log
+
+      - name: Show errors
+        if: failure()
+        run: grep -n -B2 -A6 "error:" build.log | head -200 || true

@@ -11,7 +11,11 @@
       "supportsTablet": false,
       "bundleIdentifier": "com.ringfence.prototype",
       "infoPlist": {
-        "NSFaceIDUsageDescription": "Ringfence uses Face ID to confirm it's you before unlocking protected apps."
+        "NSFaceIDUsageDescription": "Ringfence uses Face ID to confirm it's you before unlocking protected apps.",
+        "NSBluetoothAlwaysUsageDescription": "Ringfence uses Bluetooth to stay linked to your watch, so it can protect your phone if they're separated.",
+        "UIBackgroundModes": [
+          "bluetooth-central"
+        ]
       }
     },
     "android": {

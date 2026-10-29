@@ -4,7 +4,7 @@
  */
 import { accountById, appById } from './catalog';
 import { confirmIdentity, haptic, notify } from './device';
-import { demo, ring } from './ring';
+import { demo, ring, watchRing } from './ring';
 import type { Reading } from './ring/types';
 import { clearSaved, defaults, log, store, type State, type Zone } from './store';
 
@@ -14,8 +14,12 @@ const UNLOCK_RANGE_M = 1.5;
 export const wearableWord = (s: State) => (s.wearable === 'ring' ? 'ring' : 'watch');
 export const fmtM = (d: number) => `${d.toFixed(1)} m`;
 
-export function zoneFor(r: Reading, lockDistance: number): Zone {
-  if (!r.connected || r.distance > lockDistance) return 'away';
+export function zoneFor(r: Reading, lockDistance: number, realWatch = false): Zone {
+  if (!r.connected) return 'away';
+  // A real watch's distance is a rough estimate from signal strength, so only a dropped
+  // connection counts as "away". Long estimated distances show as a weak signal instead.
+  if (realWatch) return r.distance > lockDistance * 0.5 ? 'weak' : 'near';
+  if (r.distance > lockDistance) return 'away';
   if (r.distance > lockDistance * 0.5) return 'weak';
   return 'near';
 }
@@ -38,7 +42,14 @@ export function startEngine() {
   if (started) return;
   started = true;
   const s = store.get();
-  if (s.ringPaired && s.ringId) ring.restore(s.ringId);
+  if (s.ringPaired && s.ringId) demo.restore(s.ringId);
+  if (s.ringSource === 'watch' && s.watchId && watchRing) {
+    ring.setSource('watch');
+    watchRing.restore(s.watchId);
+  } else if (s.ringSource === 'watch') {
+    // Real watch chosen, but this build (e.g. Expo Go) has no Bluetooth module.
+    store.set({ ringSource: 'simulated' });
+  }
   ring.subscribe(onReading);
   setInterval(tick, 250);
 }
@@ -49,7 +60,7 @@ function onReading(r: Reading) {
     store.set({ reading: r });
     return;
   }
-  const zone = zoneFor(r, s.lockDistance);
+  const zone = zoneFor(r, s.lockDistance, s.ringSource === 'watch');
   const prev = s.zone;
   store.set({ reading: r, zone });
   if (zone !== prev && s.onboarded) logZoneChange(prev, zone, r);
@@ -251,6 +262,31 @@ export function unpairRing() {
   ring.unpair();
   store.set({ ringPaired: false, ringId: null, onboarded: false, phase: 'armed' });
   log('Ring unpaired', 'warn');
+}
+
+// ----- Real watch -----
+
+export function selectRealWatch(id: string, name: string) {
+  if (!watchRing) return;
+  store.set({
+    ringSource: 'watch',
+    watchId: id,
+    watchName: name,
+    wearable: 'watch',
+    ringName: name,
+    ringPaired: true,
+    ringId: store.get().ringId ?? id,
+  });
+  ring.setSource('watch');
+  watchRing.restore(id);
+  log(`Now protecting with your ${name}`, 'ok');
+}
+
+export function selectSimulatedRing() {
+  watchRing?.unpair();
+  store.set({ ringSource: 'simulated', wearable: 'ring', ringName: 'Ringfence Ring' });
+  ring.setSource('simulated');
+  log('Switched back to the simulated ring', 'info');
 }
 
 // ----- Demo -----

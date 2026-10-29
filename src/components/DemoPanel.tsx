@@ -70,10 +70,21 @@ export function DemoPanel() {
           </Pressable>
         </View>
 
+        {s.ringSource === 'watch' ? (
+          <View style={{ flexDirection: 'row', gap: 10, backgroundColor: c.accentBg, borderRadius: 14, padding: 14 }}>
+            <Icon name="watch" size={20} color={c.accent} />
+            <Text style={[T.footnote, { color: c.ink, flex: 1, lineHeight: 18 }]}>
+              Using your real watch, so distance comes from Bluetooth. To test a snatch, leave the phone and walk away with the watch.
+            </Text>
+          </View>
+        ) : null}
+
         {notReady ? (
           <Text style={[T.callout, { color: c.muted }]}>Finish setup and pair your ring first, then come back here.</Text>
         ) : (
           <>
+            {s.ringSource === 'simulated' ? (
+            <>
             <View style={{ gap: 6 }}>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'baseline' }}>
                 <Text style={[T.headline, { color: c.ink }]}>Distance from {s.wearable === 'ring' ? 'ring' : 'watch'}</Text>
@@ -119,6 +130,8 @@ export function DemoPanel() {
                 <Button title="Bring ring back" icon="ring" variant="secondary" onPress={demoBringBack} />
               </View>
             </View>
+            </>
+            ) : null}
 
             <View style={{ gap: 8 }}>
               <Text style={[T.caption, { color: c.muted }]}>Where you are</Text>

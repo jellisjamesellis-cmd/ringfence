@@ -44,6 +44,7 @@ const PATHS = {
   trash: 'M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13',
   battery: 'M3 8h15v8H3zM21 11v2',
   signal: 'M4 18v-2M9 18v-5M14 18v-8M19 18V6',
+  search: 'M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-4-4',
 } as const;
 
 export type IconName = keyof typeof PATHS;

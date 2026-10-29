@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSyncExternalStore } from 'react';
 
 import { FREEZABLE_ACCOUNTS, LOCKABLE_APPS } from './catalog';
+import type { RingSource } from './ring';
 import type { Reading } from './ring/types';
 
 export type Zone = 'near' | 'weak' | 'away';
@@ -22,6 +23,9 @@ export type State = {
   ringPaired: boolean;
   ringId: string | null;
   ringName: string;
+  ringSource: RingSource;
+  watchId: string | null;
+  watchName: string | null;
   protectedApps: string[];
   freezeAccounts: string[];
   addedAccounts: string[];
@@ -52,7 +56,7 @@ export type State = {
 };
 
 const PERSISTED: (keyof State)[] = [
-  'onboarded', 'wearable', 'ringPaired', 'ringId', 'ringName', 'protectedApps', 'freezeAccounts',
+  'onboarded', 'wearable', 'ringPaired', 'ringId', 'ringName', 'ringSource', 'watchId', 'watchName', 'protectedApps', 'freezeAccounts',
   'addedAccounts', 'graceSeconds', 'lockDistance', 'safeZones', 'notifications', 'faceIdForChanges',
   'trustedContact', 'events', 'demoHintDismissed', 'phase', 'lockedApps', 'frozenAccounts', 'pausedUntil',
 ];
@@ -67,6 +71,9 @@ export function defaults(): State {
     ringPaired: false,
     ringId: null,
     ringName: 'Ringfence Ring',
+    ringSource: 'simulated',
+    watchId: null,
+    watchName: null,
     protectedApps: LOCKABLE_APPS.filter(a => a.defaultOn).map(a => a.id),
     freezeAccounts: FREEZABLE_ACCOUNTS.filter(a => a.defaultOn).map(a => a.id),
     addedAccounts: [],

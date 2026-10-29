@@ -6,7 +6,7 @@ import { Battery, Card, Group, Row, Screen, Segmented, signalLabel, SignalBars }
 import { WearableVisual } from '@/components/WearableVisual';
 import { haptic } from '@/lib/device';
 import { fmtM, guard, unpairRing } from '@/lib/engine';
-import { ring } from '@/lib/ring';
+import { ring, watchLinkAvailable } from '@/lib/ring';
 import { batteryDays, statusFor } from '@/lib/status';
 import { log, store, useApp, type WearableType } from '@/lib/store';
 import { type as T, useTheme } from '@/lib/theme';
@@ -81,6 +81,25 @@ export default function RingTab() {
       <Group>
         <Row glyph="vibrate" title={finding ? `Your ${isRing ? 'ring' : 'watch'} is vibrating…` : `Find my ${isRing ? 'ring' : 'watch'}`} onPress={finding || !r.connected ? undefined : find} disabled={!r.connected} />
         <Row glyph="trash" title={`Unpair ${isRing ? 'ring' : 'watch'}`} destructive onPress={unpair} last />
+      </Group>
+
+      <Group title="Real watch" footer="Use a watch you already wear, such as a Polar Vantage, instead of the simulated ring.">
+        <Row
+          glyph="watch"
+          title={s.ringSource === 'watch' ? s.watchName ?? 'Your watch' : 'Connect your Polar watch'}
+          subtitle={
+            s.ringSource === 'watch'
+              ? r.connected
+                ? 'In use · connected'
+                : 'In use · not connected'
+              : watchLinkAvailable
+                ? 'Uses Bluetooth'
+                : 'Needs the installed Ringfence app'
+          }
+          onPress={() => router.push('/watch-link')}
+          chevron
+          last
+        />
       </Group>
 
       <Group title="Wearable type" footer="A Ringfence Ring is harder to snatch than a watch, and lasts about 5 days per charge.">

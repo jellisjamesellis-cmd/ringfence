@@ -41,6 +41,10 @@ export default function RootLayout() {
               options={{ headerShown: true, title: 'Add an account', headerBackTitle: 'Back', headerShadowVisible: false }}
             />
             <Stack.Screen
+              name="watch-link"
+              options={{ headerShown: true, title: 'Connect your watch', headerBackTitle: 'Back', headerShadowVisible: false }}
+            />
+            <Stack.Screen
               name="trusted-contact"
               options={{ headerShown: true, title: 'Trusted contact', headerBackTitle: 'Back', headerShadowVisible: false }}
             />
