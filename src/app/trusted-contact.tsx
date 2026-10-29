@@ -35,7 +35,7 @@ export default function TrustedContact() {
 
   return (
     <KeyboardAvoidingView style={{ flex: 1, backgroundColor: c.bg }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-      <ScrollView contentContainerStyle={{ padding: 16, gap: 16 }} keyboardShouldPersistTaps="handled">
+      <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={{ padding: 16, gap: 16 }} keyboardShouldPersistTaps="handled">
         <Text style={[T.callout, { color: c.muted, lineHeight: 22 }]}>
           If your phone is taken, Ringfence alerts this person. Their name and number also show on the locked screen, so anyone who finds the phone can return it.
         </Text>

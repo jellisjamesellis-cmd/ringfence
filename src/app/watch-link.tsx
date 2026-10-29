@@ -22,7 +22,7 @@ export default function WatchLinkScreen() {
 
   if (!watchLinkAvailable || !watchRing) {
     return (
-      <ScrollView style={{ flex: 1, backgroundColor: c.bg }} contentContainerStyle={{ padding: 16, gap: 16 }}>
+      <ScrollView contentInsetAdjustmentBehavior="automatic" style={{ flex: 1, backgroundColor: c.bg }} contentContainerStyle={{ padding: 16, gap: 16 }}>
         <Card style={{ gap: 12 }}>
           <View style={{ width: 48, height: 48, borderRadius: 14, backgroundColor: c.warnBg, alignItems: 'center', justifyContent: 'center' }}>
             <Icon name="watch" size={26} color={c.warn} />
@@ -50,7 +50,7 @@ export default function WatchLinkScreen() {
   };
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: c.bg }} contentContainerStyle={{ padding: 16, gap: 20, paddingBottom: 40 }}>
+    <ScrollView contentInsetAdjustmentBehavior="automatic" style={{ flex: 1, backgroundColor: c.bg }} contentContainerStyle={{ padding: 16, gap: 20, paddingBottom: 40 }}>
       {active ? (
         <Card style={{ gap: 16 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>

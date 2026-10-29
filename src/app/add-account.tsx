@@ -20,7 +20,7 @@ export default function AddAccount() {
   };
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: c.bg }} contentContainerStyle={{ padding: 16, gap: 20 }}>
+    <ScrollView contentInsetAdjustmentBehavior="automatic" style={{ flex: 1, backgroundColor: c.bg }} contentContainerStyle={{ padding: 16, gap: 20 }}>
       <Text style={[T.callout, { color: c.muted, lineHeight: 22 }]}>
         Connect another account so it freezes with the rest. In the real app you'd sign in to your provider here.
       </Text>
