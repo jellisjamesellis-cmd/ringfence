@@ -1,0 +1,46 @@
+{
+  "expo": {
+    "name": "Ringfence",
+    "slug": "ringfence",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "ringfence",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.ringfence.prototype",
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "Ringfence uses Face ID to confirm it's you before unlocking protected apps."
+      }
+    },
+    "android": {
+      "package": "com.ringfence.prototype",
+      "adaptiveIcon": {
+        "backgroundColor": "#0B1017",
+        "foregroundImage": "./assets/images/adaptive-icon.png"
+      }
+    },
+    "web": {
+      "output": "single",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#0B1017",
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 96
+        }
+      ],
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Ringfence uses Face ID to confirm it's you before unlocking protected apps."
+        }
+      ]
+    ]
+  }
+}
