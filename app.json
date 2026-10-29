@@ -41,6 +41,9 @@
           "faceIDPermission": "Ringfence uses Face ID to confirm it's you before unlocking protected apps."
         }
       ]
-    ]
+    ],
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    }
   }
 }
