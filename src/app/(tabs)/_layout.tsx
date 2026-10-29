@@ -28,7 +28,7 @@ export default function TabsLayout() {
           name={t.name}
           options={{
             title: t.title,
-            tabBarIcon: ({ color }) => <Icon name={t.icon} size={24} color={color} strokeWidth={1.9} />,
+            tabBarIcon: ({ color }) => <Icon name={t.icon} size={24} color={color as string} strokeWidth={1.9} />,
           }}
         />
       ))}

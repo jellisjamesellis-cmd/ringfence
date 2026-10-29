@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { useRef, useState } from 'react';
+import { useRef, useState, type ComponentRef } from 'react';
 import { ScrollView, Text, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -33,7 +33,7 @@ export default function Welcome() {
   const { width } = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const [page, setPage] = useState(0);
-  const scroller = useRef<ScrollView>(null);
+  const scroller = useRef<ComponentRef<typeof ScrollView>>(null);
   const last = page === SLIDES.length - 1;
 
   const next = () => {
